@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="images/favicon.png" type="image/png">
+        <title>Listorium</title>
+
+        <!-- link des stysheets -->
+        <link rel="stylesheet" href="structure/header.css">
+        <link rel="stylesheet" href="structure/footer.css">
+        <link rel="stylesheet" href="tierList/tierList.css">
+        <link rel="stylesheet" href="tierList/images.css">
+    </head>
+    <body>
+        <header>
+            <img src="images/logo.png" alt="Logo du site">
+        </header>
+
+        <main>
+            <p>Nom : </p>
+            <p>Description : </p>
+            <div id="addBlock" onclick="dupliquerBlock()"></div>
+            <div id="cadreTierlist">
+                <div class="block">
+                    <div class="nom"></div>
+                    <div class="stock dropZone texture"></div>
+                </div>
+            </div>
+            <select id="repertoire">
+                <option value="aucun">aucun</option>
+            </select>
+            <div id="cadreImage" class="dropZone">
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Mon Site Web</p>
+        </footer>
+    </body>
+
+    <!-- link des scripts js -->
+    <script src="tierList/init.js"></script>
+    <script src="tierList/images.js"></script>
+</html>
