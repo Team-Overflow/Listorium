@@ -1,0 +1,129 @@
+#frame{
+    height: auto;
+    width: 100%;
+    border: 2px solid rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+}
+
+#adminTemplate{
+    height: auto;
+    width: 100%;
+    border-bottom: 2px solid black;
+    background-color: rgb(247, 247, 247);
+    display: flex;
+    flex-direction: row;
+}
+
+#buttonSafe{
+    display: flex;
+    flex-direction: row;
+}
+
+#buttonSafe > *{
+    margin: 15px 0px 15px 15px;
+}
+
+.input{
+    display: flex;
+    flex-direction: row;
+}
+
+.input > p{
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.input > input{
+    padding-left: 5px;
+}
+
+#buttonRisk{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+#buttonRisk > *{
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+#table{
+    height: auto;
+    width: 100%;
+    background-color: rgb(212, 212, 212);
+    display: flex;
+    flex-direction: column;
+}
+
+#data{
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.data{
+    padding-left: 5px;
+    width: 20%;
+    border-right: 2px solid rgb(0, 0, 0);
+}
+
+.title{
+    font-weight: bold;
+}
+
+#templateContainer,
+#favoriteTemplate,
+#noFavoriteTemplate{
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.template{
+    border-top: 1px solid rgb(0, 0, 0);
+    display: flex;
+    flex-direction: row;
+}
+
+.templateName{
+    display: flex;
+    align-items: center;
+}
+
+.templateName > input{
+    height: 80%;
+    width: 99%;
+    border: none;
+    background-color: rgb(212, 212, 212);
+    font-weight: bold;
+}
+
+.favorite{
+    display: flex;
+    align-items: center;
+}
+
+#adminImage{
+    height: auto;
+    width: 100%;
+    border-top: 2px solid black;
+    background-color: rgb(247, 247, 247);
+    display: flex;
+    flex-direction: row;
+}
+
+#adminImage > *{
+    margin: 15px 0px 15px 15px;
+}
+
+#stockImages{
+    height: auto;
+    width: 100%;
+    background-color: rgb(252, 252, 252);
+}

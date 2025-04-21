@@ -1,94 +1,86 @@
 <?php
 
-// Connexion à la base de données
-$host = 'localhost';
-$dbname = 'tierListData';
-$username = 'ychauvet';
-$password = '152911';
+require_once __DIR__ . '/../login/login.php';
 
 try{
-    // Connexion au serveur MySQL sans spécifier de base de données
-    $pdo = new PDO("mysql:host=$host", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Création de la base de données si elle n'existe pas
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS $dbname");
+    /* création de la base de données */
+    $dbname = $config['dbname'];
+    $pdo->exec("
+        CREATE DATABASE $dbname
+    ");
     
-    // Maintenant, se connecter à la base de données nouvellement créée
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    /* connexion à la base de données */
+    $pdo = loginDataBase($config['host'], $config['dbname'], $config['username'], $config['password']);
 
-    consoleLog("Base de données connectée avec succès !");
-
-    // Création de la table "user" si elle n'existe pas déjà
+    /* création de la table "user" */
     $sqlCreateTable = "
-        CREATE TABLE IF NOT EXISTS user (
-            idUser INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            surname VARCHAR(255) NOT NULL,
-            createUser TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updateUser TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        CREATE TABLE user (
+            userId INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            userName VARCHAR(20) NOT NULL,
+            userSurname VARCHAR(20) NOT NULL,
+            nbTemplates INT UNSIGNED NOT NULL DEFAULT 0,
+            userCreate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            userUpdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            status VARCHAR(20) NOT NULL
         )";
-    
     $pdo->exec($sqlCreateTable);
-    consoleLog("Table 'user' créée (si elle n'existait pas).");
+    /* Remarque status : PU -> Principal User, FU -> Friend User, SA -> Save Account */
 
-    // Création de la table "template" si elle n'existe pas déjà
+    /* création de la table "template" */
     $sqlCreateTable = "
-        CREATE TABLE IF NOT EXISTS template (
-            idTemplate INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            description VARCHAR(255),
-            color VARCHAR(255) NOT NULL,
-            createTemplate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updateTemplate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        CREATE TABLE template (
+            templateId INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            templateName VARCHAR(20) NOT NULL DEFAULT 'newTemplate',
+            nbImages INT UNSIGNED NOT NULL DEFAULT 0,
+            templateCreate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            templateUpdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            favorite BOOLEAN NOT NULL DEFAULT false,
+            userId INT UNSIGNED,
+            FOREIGN KEY (userId) REFERENCES user (userId) ON DELETE CASCADE
         )";
-
     $pdo->exec($sqlCreateTable);
-    consoleLog("Table 'template' créée (si elle n'existait pas).");
 
-    // Création de la table "user_template" si elle n'existe pas déjà
+    /* création de la table "class" */
     $sqlCreateTable = "
-        CREATE TABLE IF NOT EXISTS user_template (
-            idUser INT UNSIGNED,
-            idTemplate INT UNSIGNED,
-            PRIMARY KEY (idUser, idTemplate),
-            FOREIGN KEY (idUser) REFERENCES user(idUser) ON DELETE CASCADE,
-            FOREIGN KEY (idTemplate) REFERENCES template(idTemplate) ON DELETE CASCADE
+        CREATE TABLE class (
+            classId INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            num INT UNSIGNED DEFAULT 0,
+            className VARCHAR(20),
+            color VARCHAR(20) NOT NULL DEFAULT 'grey',
+            templateId INT UNSIGNED,
+            FOREIGN KEY (templateId) REFERENCES template (templateId) ON DELETE CASCADE
         )";
-
     $pdo->exec($sqlCreateTable);
-    consoleLog("Table 'user_template' créée (si elle n'existait pas).");
 
-    // Création de la table "class" si elle n'existe pas déjà
+    /* création de la table "image" */
     $sqlCreateTable = "
-        CREATE TABLE IF NOT EXISTS class (
-            idClass INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            numClass INT UNSIGNED,
-            name VARCHAR(255) NOT NULL,
-            color VARCHAR(255) NOT NULL,
-            idTemplate INT UNSIGNED,
-            FOREIGN KEY (idTemplate) REFERENCES template(idTemplate) ON DELETE CASCADE
+        CREATE TABLE image (
+            imageId INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            imageName VARCHAR(20) NOT NULL,
+            bin VARCHAR(20) NOT NULL,
+            classId INT UNSIGNED,
+            FOREIGN KEY (classId) REFERENCES class(classId) ON DELETE CASCADE
         )";
-
     $pdo->exec($sqlCreateTable);
-    consoleLog("Table 'class' créée (si elle n'existait pas).");
 
-    // Création de la table "image" si elle n'existe pas déjà
+    /* création de la table "class_image" */
     $sqlCreateTable = "
-        CREATE TABLE IF NOT EXISTS image (
-            idImage INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            binImage VARCHAR(255) NOT NULL,
-            idClass INT UNSIGNED,
-            FOREIGN KEY (idClass) REFERENCES class(idClass) ON DELETE CASCADE
+        CREATE TABLE user_template (
+            classId INT UNSIGNED,
+            imageId INT UNSIGNED,
+            PRIMARY KEY (classId, imageId),
+            FOREIGN KEY (classId) REFERENCES class(classId),
+            FOREIGN KEY (imageId) REFERENCES image(imageId)
         )";
-
     $pdo->exec($sqlCreateTable);
-    consoleLog("Table 'image' créée (si elle n'existait pas).");
 
-    consoleLog("Base de données générée avec succès !");
+    /* ajout de l'utilisateur principale */
+    $sqlData = "
+        INSERT INTO user (userName, userSurname, status) VALUES ('Principal', 'User', 'PU')
+    ";
+    $pdo->exec($sqlData);
 }
 catch (PDOException $e){
-    consoleLog("Erreur : " . $e->getMessage());
+    error_log("Erreur de création de la base de données:" . $e->getMessage());
 }
 ?>

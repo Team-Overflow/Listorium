@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="images/favicon.png" type="image/png">
+        <title>Listorium</title>
+
+        <!-- link des stysheets -->
+        <link rel="stylesheet" href="structure/page.css">
+        <link rel="stylesheet" href="popup/popup.css">
+        <link rel="stylesheet" href="myData/myData.css">
+    </head>
+    <body>
+        <header></header>
+        <main>
+            <div id="popup"></div>
+            <div id="frame">
+                <div id="adminTemplate">
+                    <div id="buttonSafe">
+                        <div class="input">
+                            <p>Search : </p>
+                            <input type="text" id="searchBar" maxlength="20" placeholder="search template">
+                        </div>
+                        <div class="input">
+                            <p>Name : </p>
+                            <input type="text" id="userName" maxlength="20" oninput="renameUser()">
+                        </div>
+                        <div class="input">
+                            <p>Surname : </p>
+                            <input type="text" id="userSurname" maxlength="20" oninput="renameUser()">
+                        </div>
+                        <button id="addTemplate" onclick="addTemplate()">Add Template</button>
+                        <button id="deleteTemplate" onclick="deleteTemplate()">Delete Template</button>
+                    </div>
+                    <div id="buttonRisk">
+                        <button id="deleteAllTemplates" onclick="deleteAllTemplates()">Delete All Templates</button>
+                        <button id="resetAccount" onclick="resetAccount()">Reset Account</button>
+                    </div>
+                </div>
+                <div id="table">
+                    <div id="data">
+                        <div class="data title">Name</div>
+                        <div class="data title">Nb Images</div>
+                        <div class="data title">Created Template</div>
+                        <div class="data title">Updated Template</div>
+                        <div class="data title">Favourite</div>
+                    </div>
+                    <div id="templateContainer">
+                        <div id="favoriteTemplate"></div>
+                        <div id="noFavoriteTemplate"></div>
+                    </div>
+                </div>
+                <div id="adminImage">
+                    <p id="focusTemplateName" class="title">None</p>
+                    <button id="addImages" onclick="addImages()">Add Images</button>
+                    <button id="deleteImages" onclick="deleteImages()">Delete Images</button>
+                </div>
+                <div id="stockImages"></div>
+            </div>
+        </main>
+        <footer></footer>
+    </body>
+
+    <!-- link des scripts js -->
+    <script src="structure/structure.js"></script>
+    <script src="popup/popup.js"></script>
+    <script src="myData/user.js"></script>
+    <script src="myData/template.js"></script>
+    <script src="myData/image.js"></script>
+</html>

@@ -1,0 +1,10 @@
+#loading{
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.6); /* ou transparent */
+    z-index: 9999;
+    display: none;
+    cursor: wait;
+}
